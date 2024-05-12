@@ -5,7 +5,7 @@ import { formatTime } from "./formatTime";
 export const Stoper = () => {
   const [mainTime, setMainTime] = useState<number>(0);
   const [loopTime, setLoopTime] = useState<number>(0);
-  const [loop, setLoop] = useState([]);
+  const [loop, setLoop] = useState<number[]>([]);
 
   const intervalRef = useRef(0);
 
