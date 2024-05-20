@@ -29,7 +29,6 @@ export const Stoper = () => {
     <div className="stoper">
       <h1>MegaK project 2</h1>
       <h2>Stoper {formatTime(mainTime)}</h2>
-      {loopTime && <p>licznik okrążenia {formatTime(loopTime)}</p>}
 
       <div className="buttons">
         <button onClick={handleStart}>Start</button>
@@ -37,6 +36,8 @@ export const Stoper = () => {
         <button onClick={() => handleLoopTime(loopTime)}>Loop</button>
         <button onClick={handleReset}>Reset</button>
       </div>
+
+      {loopTime && <p>licznik okrążenia {formatTime(loopTime)}</p>}
     </div>
   );
 };
