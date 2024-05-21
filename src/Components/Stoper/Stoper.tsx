@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
-import "./style.scss";
 import { formatTime } from "./formatTime";
+import "./style.scss";
 
 export const Stoper = () => {
   const [mainTime, setMainTime] = useState<number>(0);
@@ -23,7 +23,6 @@ export const Stoper = () => {
     clearInterval(intervalRef.current);
     setRunTime(false);
     setIsViewResult(true);
-    // const { averageLoopTime } = useSortLoops(loops);
   };
   const handleLoopTime = (loopTime: number) => {
     setLoops((prev) => [...prev, loopTime]);
