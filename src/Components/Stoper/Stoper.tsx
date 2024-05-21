@@ -1,6 +1,9 @@
 import { useRef, useState } from "react";
-import { formatTime } from "./formatTime";
+import { formatTime } from "./heplers/formatTime";
+import { useSortLoops } from "./hooks/useSortLoops";
 import "./style.scss";
+import { TotalTime } from "./Components/TotalTime/TotalTime";
+import { LoopCounter } from "./Components/LoopCounter/LoopCounter";
 
 export const Stoper = () => {
   const [mainTime, setMainTime] = useState<number>(0);
@@ -8,6 +11,7 @@ export const Stoper = () => {
   const [runTime, setRunTime] = useState(false);
   const [isViewResult, setIsViewResult] = useState(false);
   const [loops, setLoops] = useState<number[]>([]);
+  const { averageLoopTime, fastestLoop, slowestLoop } = useSortLoops(loops);
 
   const intervalRef = useRef(0);
 
@@ -21,6 +25,7 @@ export const Stoper = () => {
   };
   const handleStop = () => {
     clearInterval(intervalRef.current);
+    setLoops((prev) => [...prev, loopTime]);
     setRunTime(false);
     setIsViewResult(true);
   };
@@ -38,11 +43,17 @@ export const Stoper = () => {
     <div className="main">
       <h1>MegaK project 2</h1>
       {isViewResult ? (
-        <p>Średni czas mm:ss:ms</p>
+        <div>
+          <p>Łączny czas {formatTime(mainTime)}</p>
+          <p>Średni czas {formatTime(averageLoopTime)}</p>
+          <p>liczba okrążeń {loops.length}</p>
+          <p>najszybsze okrążenie {formatTime(fastestLoop)}</p>
+          <p>najwolniejsze okrążenie {formatTime(slowestLoop)}</p>
+        </div>
       ) : (
         <div className="stoper">
-          <h2>Stoper {formatTime(mainTime)}</h2>
-          <p>licznik okrążenia {formatTime(loopTime)}</p>
+          <TotalTime mainTime={mainTime} />
+          <LoopCounter loopTime={loopTime} />
 
           <div className="buttons">
             <button onClick={handleStart}>Start</button>
