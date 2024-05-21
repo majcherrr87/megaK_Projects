@@ -7,5 +7,8 @@ export const formatTime = (time: number) => {
   return `
   ${minutes.toString().padStart(2, "0")}:${lastSeconds
     .toString()
-    .padStart(2, "0")}:${milisecondsFormat.toString().padStart(2, "0")}`;
+    .padStart(2, "0")}:${milisecondsFormat
+    .toFixed()
+    .toString()
+    .padStart(2, "0")}`;
 };
