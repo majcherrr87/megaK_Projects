@@ -4,7 +4,8 @@ export const formatTime = (time: number) => {
   const lastSeconds = seconds % 60;
   const milisecondsFormat = (time % 1000) / 10;
 
-  return `${minutes}:${lastSeconds
+  return `
+  ${minutes.toString().padStart(2, "0")}:${lastSeconds
     .toString()
     .padStart(2, "0")}:${milisecondsFormat.toString().padStart(2, "0")}`;
 };

@@ -5,39 +5,62 @@ import { formatTime } from "./formatTime";
 export const Stoper = () => {
   const [mainTime, setMainTime] = useState<number>(0);
   const [loopTime, setLoopTime] = useState<number>(0);
-  const [loop, setLoop] = useState<number[]>([]);
+  const [runTime, setRunTime] = useState(false);
+  const [isViewResult, setIsViewResult] = useState(false);
+  const [loops, setLoops] = useState<number[]>([]);
 
   const intervalRef = useRef(0);
 
   const handleStart = () => {
+    if (runTime) return;
     intervalRef.current = setInterval(() => {
       setMainTime((prev) => prev + 10);
       setLoopTime((prev) => prev + 10);
+      setRunTime(true);
     }, 10);
   };
   const handleStop = () => {
     clearInterval(intervalRef.current);
+    setRunTime(false);
+    setIsViewResult(true);
+    // const { averageLoopTime } = useSortLoops(loops);
   };
   const handleLoopTime = (loopTime: number) => {
-    setLoop((prev) => [...prev, loopTime]);
+    setLoops((prev) => [...prev, loopTime]);
     setLoopTime(0);
-    console.log(loop);
   };
-  const handleReset = () => {};
+  const handleReset = () => {
+    setMainTime(0);
+    setLoopTime(0);
+    setLoops([]);
+  };
 
   return (
-    <div className="stoper">
+    <div className="main">
       <h1>MegaK project 2</h1>
-      <h2>Stoper {formatTime(mainTime)}</h2>
+      {isViewResult ? (
+        <p>Średni czas mm:ss:ms</p>
+      ) : (
+        <div className="stoper">
+          <h2>Stoper {formatTime(mainTime)}</h2>
+          <p>licznik okrążenia {formatTime(loopTime)}</p>
 
-      <div className="buttons">
-        <button onClick={handleStart}>Start</button>
-        <button onClick={handleStop}>Stop</button>
-        <button onClick={() => handleLoopTime(loopTime)}>Loop</button>
-        <button onClick={handleReset}>Reset</button>
-      </div>
+          <div className="buttons">
+            <button onClick={handleStart}>Start</button>
+            <button onClick={handleStop}>Stop</button>
+            <button onClick={() => handleLoopTime(loopTime)}>Loop</button>
+            <button onClick={handleReset}>Reset</button>
+          </div>
 
-      {loopTime && <p>licznik okrążenia {formatTime(loopTime)}</p>}
+          <div className="tabLoop">
+            <ol>
+              {loops.map((loop, index) => (
+                <li key={index}>{formatTime(loop)}</li>
+              ))}
+            </ol>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
