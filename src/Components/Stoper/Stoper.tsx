@@ -1,9 +1,19 @@
-import { useRef, useState } from "react";
+import { useRef, useState, createContext } from "react";
 import { formatTime } from "./heplers/formatTime";
 import { useSortLoops } from "./hooks/useSortLoops";
+import { StoperView } from "./Components/StoperView/StoperView";
 import "./style.scss";
-import { TotalTime } from "./Components/TotalTime/TotalTime";
-import { LoopCounter } from "./Components/LoopCounter/LoopCounter";
+export type kotType = {
+  mainTime: number;
+  loopTime: number;
+  loops: number[];
+  handleStart: () => void;
+  handleStop: () => void;
+  handleLoopTime: (num: number) => void;
+  handleReset: () => void;
+};
+
+export const StoperContext = createContext({});
 
 export const Stoper = () => {
   const [mainTime, setMainTime] = useState<number>(0);
@@ -38,39 +48,32 @@ export const Stoper = () => {
     setLoopTime(0);
     setLoops([]);
   };
+  const x: kotType = {
+    mainTime,
+    loopTime,
+    loops,
+    handleStart,
+    handleStop,
+    handleLoopTime,
+    handleReset,
+  };
 
   return (
-    <div className="main">
-      <h1>MegaK project 2</h1>
-      {isViewResult ? (
-        <div>
-          <p>Łączny czas {formatTime(mainTime)}</p>
-          <p>Średni czas {formatTime(averageLoopTime)}</p>
-          <p>liczba okrążeń {loops.length}</p>
-          <p>najszybsze okrążenie {formatTime(fastestLoop)}</p>
-          <p>najwolniejsze okrążenie {formatTime(slowestLoop)}</p>
-        </div>
-      ) : (
-        <div className="stoper">
-          <TotalTime mainTime={mainTime} />
-          <LoopCounter loopTime={loopTime} />
-
-          <div className="buttons">
-            <button onClick={handleStart}>Start</button>
-            <button onClick={handleStop}>Stop</button>
-            <button onClick={() => handleLoopTime(loopTime)}>Loop</button>
-            <button onClick={handleReset}>Reset</button>
+    <StoperContext.Provider value={x}>
+      <div className="main">
+        <h1>MegaK project 2</h1>
+        {isViewResult ? (
+          <div>
+            <p>Łączny czas {formatTime(mainTime)}</p>
+            <p>Średni czas {formatTime(averageLoopTime)}</p>
+            <p>liczba okrążeń {loops.length}</p>
+            <p>najszybsze okrążenie {formatTime(fastestLoop)}</p>
+            <p>najwolniejsze okrążenie {formatTime(slowestLoop)}</p>
           </div>
-
-          <div className="tabLoop">
-            <ol>
-              {loops.map((loop, index) => (
-                <li key={index}>{formatTime(loop)}</li>
-              ))}
-            </ol>
-          </div>
-        </div>
-      )}
-    </div>
+        ) : (
+          <StoperView />
+        )}
+      </div>
+    </StoperContext.Provider>
   );
 };
