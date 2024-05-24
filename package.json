@@ -1,8 +1,9 @@
 {
-  "name": "project1-cv",
+  "name": "projects",
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "author": "majcherrr87, kitkukotku, sho9026",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
