@@ -1,43 +1,43 @@
 import { useRef, useState, createContext } from "react";
-import { formatTime } from "./heplers/formatTime";
-import { useSortLoops } from "./hooks/useSortLoops";
-import { StoperView } from "./Components/StoperView/StoperView";
+import { StoperView } from "./View/StoperView/StoperView";
+import { contextProviderType } from "./types/types";
+import { ResultView } from "./View/ResultView/ResultView";
 import "./style.scss";
-export type kotType = {
-  mainTime: number;
-  loopTime: number;
-  loops: number[];
-  handleStart: () => void;
-  handleStop: () => void;
-  handleLoopTime: (num: number) => void;
-  handleReset: () => void;
+
+const contextInitialValue = {
+  mainTime: 0,
+  loopTime: 0,
+  loops: [],
+  handleStart: () => {},
+  handleStop: () => {},
+  handleLoopTime: () => {},
+  handleReset: () => {},
 };
 
-export const StoperContext = createContext({});
+export const StoperContext =
+  createContext<contextProviderType>(contextInitialValue);
 
 export const Stoper = () => {
   const [mainTime, setMainTime] = useState<number>(0);
   const [loopTime, setLoopTime] = useState<number>(0);
-  const [runTime, setRunTime] = useState(false);
   const [isViewResult, setIsViewResult] = useState(false);
   const [loops, setLoops] = useState<number[]>([]);
-  const { averageLoopTime, fastestLoop, slowestLoop } = useSortLoops(loops);
 
-  const intervalRef = useRef(0);
+  const intervalRef = useRef<number | null>(null);
 
   const handleStart = () => {
-    if (runTime) return;
+    if (intervalRef.current) return;
     intervalRef.current = setInterval(() => {
       setMainTime((prev) => prev + 10);
       setLoopTime((prev) => prev + 10);
-      setRunTime(true);
     }, 10);
   };
   const handleStop = () => {
-    clearInterval(intervalRef.current);
-    setLoops((prev) => [...prev, loopTime]);
-    setRunTime(false);
-    setIsViewResult(true);
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      setLoops((prev) => [...prev, loopTime]);
+      setIsViewResult(true);
+    }
   };
   const handleLoopTime = (loopTime: number) => {
     setLoops((prev) => [...prev, loopTime]);
@@ -48,31 +48,23 @@ export const Stoper = () => {
     setLoopTime(0);
     setLoops([]);
   };
-  const x: kotType = {
-    mainTime,
-    loopTime,
-    loops,
-    handleStart,
-    handleStop,
-    handleLoopTime,
-    handleReset,
-  };
 
   return (
-    <StoperContext.Provider value={x}>
+    <StoperContext.Provider
+      value={{
+        mainTime,
+        loopTime,
+        loops,
+        handleStart,
+        handleStop,
+        handleLoopTime,
+        handleReset,
+      }}
+    >
       <div className="main">
         <h1>MegaK project 2</h1>
-        {isViewResult ? (
-          <div>
-            <p>Łączny czas {formatTime(mainTime)}</p>
-            <p>Średni czas {formatTime(averageLoopTime)}</p>
-            <p>liczba okrążeń {loops.length}</p>
-            <p>najszybsze okrążenie {formatTime(fastestLoop)}</p>
-            <p>najwolniejsze okrążenie {formatTime(slowestLoop)}</p>
-          </div>
-        ) : (
-          <StoperView />
-        )}
+
+        {isViewResult ? <ResultView /> : <StoperView />}
       </div>
     </StoperContext.Provider>
   );

@@ -1,0 +1,17 @@
+.buttons {
+  display: flex;
+  gap: 0.5rem;
+  button {
+    padding: 0.2rem;
+  }
+}
+
+.PrimaryAction {
+  color: black;
+}
+.SecondaryAction {
+  color: green;
+}
+.Reset {
+  color: red;
+}
