@@ -6,4 +6,5 @@ export type contextProviderType = {
   handleStop: () => void;
   handleLoopTime: (num: number) => void;
   handleReset: () => void;
+  handleHardReset: () => void;
 };

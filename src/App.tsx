@@ -19,7 +19,7 @@ const allProjcets: allProjectsType[] = [
 function App() {
   return (
     <div className="menu">
-      <h1>Wszystkie Projecty </h1>
+      <h1>Wszystkie Projekty MegaK</h1>
       <div className="projects">
         {allProjcets.map(({ name, path }, index) => (
           <div className="project" key={name}>

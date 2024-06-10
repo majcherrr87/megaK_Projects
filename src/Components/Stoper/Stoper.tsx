@@ -12,6 +12,7 @@ const contextInitialValue = {
   handleStop: () => {},
   handleLoopTime: () => {},
   handleReset: () => {},
+  handleHardReset: () => {},
 };
 
 export const StoperContext =
@@ -48,6 +49,13 @@ export const Stoper = () => {
     setLoopTime(0);
     setLoops([]);
   };
+  const handleHardReset = () => {
+    setMainTime(0);
+    setLoopTime(0);
+    setLoops([]);
+    setIsViewResult(false);
+    intervalRef.current = null;
+  };
 
   return (
     <StoperContext.Provider
@@ -59,10 +67,11 @@ export const Stoper = () => {
         handleStop,
         handleLoopTime,
         handleReset,
+        handleHardReset,
       }}
     >
       <div className="main">
-        <h1>MegaK project 2</h1>
+        <h1>Project 2 Stoper</h1>
 
         {isViewResult ? <ResultView /> : <StoperView />}
       </div>

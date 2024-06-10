@@ -10,7 +10,7 @@ export const TabLoops = ({ loops }: Props) => {
     <div className="tabLoops">
       <ol>
         {loops.map((loop, index) => (
-          <TabOneRecord loop={loop} index={index} />
+          <TabOneRecord key={index} loop={loop} index={index} />
         ))}
       </ol>
     </div>
