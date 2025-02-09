@@ -16,12 +16,12 @@ const cvData: CVData = {
   photo: "https://placehold.co/400x400?text=AM",
   name: "Adrian",
   lastName: "Majcher",
-  position: "Developer",
+  position: "Regular Frontend Developer",
   experience: [
-    { year: 2023, description: "Lorem ipsum" },
-    { year: 2024, description: "dolor sit amet" },
+    { year: 2023, description: "IT specialist" },
+    { year: 2024, description: "Better IT specialist" },
   ],
-  education: ["lorem ipsum", "dolor sit amet", "ale ma kota"],
+  education: ["Szkoła podstawowa", "gimnazjum", "liceum profilowane"],
 };
 export const Cv = () => {
   return (
@@ -53,7 +53,7 @@ export const Cv = () => {
               </li>
             ))}
           </ul>
-          <h2>Experience</h2>
+          <h2>Edukacja</h2>
           <ul>
             {cvData.education.map((education, index) => (
               <li key={index}>{education}</li>
